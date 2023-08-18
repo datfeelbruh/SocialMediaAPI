@@ -23,7 +23,7 @@ public class ImageUtil {
 
     public void deleteImage(String filename) {
         Optional<File> file = Optional.empty();
-        String path = imageDirectory + "\\" + filename.substring(filename.indexOf("=") + 1);
+        String path = imageDirectory + filename.substring(filename.indexOf("=") + 1);
         try (Stream<Path> entries = Files.walk(Path.of(path))) {
             file = entries
                     .filter(Files::isRegularFile)
@@ -37,7 +37,7 @@ public class ImageUtil {
 
     public Optional<File> getImage(String filename) {
         Optional<File> file = Optional.empty();
-        String path = imageDirectory + "\\" + filename;
+        String path = imageDirectory + filename;
         try (Stream<Path> entries = Files.walk(Path.of(path))) {
             file = entries
                     .filter(Files::isRegularFile)

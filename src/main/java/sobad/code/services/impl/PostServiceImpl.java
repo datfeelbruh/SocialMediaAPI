@@ -59,6 +59,7 @@ public class PostServiceImpl implements PostService {
         }
 
         if (!file.isEmpty()) {
+            imageUtil.deleteImage(post.getImageSrc());
             String filepath = imageUtil.buildFileSrc(Objects.requireNonNull(file.getContentType()), user.getUsername());
             file.transferTo(new File(filepath));
             post.setImageSrc(imageUtil.buildFileLink(filepath));

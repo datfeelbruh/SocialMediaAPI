@@ -18,4 +18,4 @@ spring:
       settings:
         web-allow-others: true
 
-image-directory: C:\Users\datfe\testImages
+image-directory: C:\Users\datfe\testImages\
