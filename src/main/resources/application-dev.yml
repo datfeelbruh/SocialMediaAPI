@@ -17,3 +17,5 @@ spring:
       path: /h2
       settings:
         web-allow-others: true
+
+image-directory: C:\Users\datfe\testImages

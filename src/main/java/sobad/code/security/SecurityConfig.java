@@ -18,8 +18,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import sobad.code.jwt.CustomAuthenticationFilter;
-import sobad.code.services.UserServiceImpl;
+import sobad.code.services.impl.UserServiceImpl;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -33,6 +34,7 @@ public class SecurityConfig {
     public static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/users", POST.name()),
             new AntPathRequestMatcher("/auth", POST.name()),
+            new AntPathRequestMatcher("/image", GET.name()),
             new AntPathRequestMatcher("/h2/**"),
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),

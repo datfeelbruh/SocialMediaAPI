@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sobad.code.dtos.TokenDtoResponse;
 import sobad.code.dtos.UserDtoRequest;
-import sobad.code.services.AuthServiceImpl;
+import sobad.code.services.impl.AuthServiceImpl;
 
 import static org.springframework.http.HttpStatus.OK;
 

@@ -1,4 +1,4 @@
-package sobad.code.services;
+package sobad.code.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,9 +13,9 @@ import sobad.code.entities.User;
 import sobad.code.jwt.Token;
 import sobad.code.mappers.TokenSerializer;
 import sobad.code.repositories.TokenRepository;
+import sobad.code.services.AuthService;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.DAYS;

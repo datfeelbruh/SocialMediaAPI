@@ -1,7 +1,8 @@
-package sobad.code.services;
+package sobad.code.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,8 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sobad.code.dtos.UserDtoRequest;
 import sobad.code.dtos.UserDtoResponse;
+import sobad.code.entities.Post;
 import sobad.code.entities.User;
 import sobad.code.repositories.UserRepository;
+import sobad.code.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +55,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         String.format("Пользователь с данным username '%s' не найден", username)));
+    }
+
+    public User getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден!"));
+    }
+
+    public void updateUserPosts(User user, Post post) {
+        user.getPosts().add(post);
+        userRepository.save(user);
     }
 }
