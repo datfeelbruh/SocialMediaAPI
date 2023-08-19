@@ -8,14 +8,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sobad.code.dtos.ResponseMessage;
 import sobad.code.dtos.UserDtoRequest;
 import sobad.code.dtos.UserDtoResponse;
+//import sobad.code.entities.Friend;
+import sobad.code.entities.Friend;
 import sobad.code.entities.Post;
 import sobad.code.entities.User;
 import sobad.code.repositories.UserRepository;
 import sobad.code.services.UserService;
+import sobad.code.status.FriendStatus;
 
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -23,7 +28,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRelationshipsServiceImpl userRelationshipsService;
 
+    @Transactional
     public UserDtoResponse createUser(UserDtoRequest userDtoRequest) {
         User user = User.builder()
                 .username(userDtoRequest.getUsername())
@@ -39,6 +46,67 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .build();
     }
 
+    @Transactional
+    public ResponseMessage sendFriendRequest(Long userId) {
+        User currentUser = getCurrentUser();
+        if (currentUser.getId().equals(userId)) {
+            throw new RuntimeException("");
+        }
+
+        User userToFriend = userRepository.findById(userId).orElseThrow();
+        userRelationshipsService.addFriendRequest(currentUser, userToFriend);
+
+        return ResponseMessage.builder()
+                .message(FriendStatus.WAITING.getStatusMessage())
+                .timestamp(Instant.now().toString())
+                .build();
+    }
+
+    @Transactional
+    public ResponseMessage decideFriendRequest(Long userId, FriendStatus requestStatus) {
+        User currentUser = getCurrentUser();
+        if (currentUser.getId().equals(userId)) {
+            throw new RuntimeException("");
+        }
+
+        User userToFriend = userRepository.findById(userId).orElseThrow();
+        userRelationshipsService.decideFriendRequest(currentUser, userToFriend, requestStatus);
+
+        return ResponseMessage.builder()
+                .message(requestStatus.getStatusMessage())
+                .timestamp(Instant.now().toString())
+                .build();
+    }
+
+    public ResponseMessage deleteFollow(Long userId) {
+        User currentUser = getCurrentUser();
+        if (currentUser.getId().equals(userId)) {
+            throw new RuntimeException("");
+        }
+
+        User userToFriend = userRepository.findById(userId).orElseThrow();
+        userRelationshipsService.removeFollower(currentUser);
+
+        return ResponseMessage.builder()
+                .message(FriendStatus.NO_FOLLOWS.getStatusMessage())
+                .timestamp(Instant.now().toString())
+                .build();
+    }
+
+    public ResponseMessage deleteFriend(Long userId) {
+        User currentUser = getCurrentUser();
+        if (currentUser.getId().equals(userId)) {
+            throw new RuntimeException("");
+        }
+
+        User userToFriend = userRepository.findById(userId).orElseThrow();
+        userRelationshipsService.removeFriend(currentUser, userToFriend);
+
+        return ResponseMessage.builder()
+                .message(FriendStatus.NO_FRIENDS.getStatusMessage())
+                .timestamp(Instant.now().toString())
+                .build();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

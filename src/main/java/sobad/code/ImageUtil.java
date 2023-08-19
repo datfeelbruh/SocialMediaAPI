@@ -22,31 +22,14 @@ public class ImageUtil {
     }
 
     public void deleteImage(String filename) {
-        Optional<File> file = Optional.empty();
         String path = imageDirectory + filename.substring(filename.indexOf("=") + 1);
-        try (Stream<Path> entries = Files.walk(Path.of(path))) {
-            file = entries
-                    .filter(Files::isRegularFile)
-                    .map(Path::toFile)
-                    .findFirst();
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
+        Optional<File> file = findFile(path);
         file.ifPresent(File::delete);
     }
 
     public Optional<File> getImage(String filename) {
-        Optional<File> file = Optional.empty();
         String path = imageDirectory + filename;
-        try (Stream<Path> entries = Files.walk(Path.of(path))) {
-            file = entries
-                    .filter(Files::isRegularFile)
-                    .map(Path::toFile)
-                    .findFirst();
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-        return file;
+        return findFile(path);
     }
 
     public String buildFileSrc(String contentType, String username) {
@@ -67,5 +50,23 @@ public class ImageUtil {
         return contentType.equals("image/png")
                 || contentType.equals("image/jpg")
                 || contentType.equals("image/jpeg");
+    }
+
+    private Optional<File> findFile(String path) {
+        Optional<File> file = Optional.empty();
+        try (Stream<Path> entries = Files.walk(Path.of(path))) {
+            file = entries
+                    .filter(Files::isRegularFile)
+                    .map(Path::toFile)
+                    .findFirst();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+
+        if (file.isPresent()) {
+            return file;
+        }
+
+        throw new RuntimeException("");
     }
 }
