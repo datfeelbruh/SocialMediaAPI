@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDtoRequest {
-    private String username;
-    private String email;
-    private String password;
+public class MessageDtoRequest {
+    private String message;
 }

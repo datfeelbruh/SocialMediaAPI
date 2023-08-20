@@ -6,4 +6,5 @@ import sobad.code.entities.User;
 
 public interface UserService {
     UserDtoResponse createUser(UserDtoRequest userDtoRequest);
+    UserDtoResponse getUser(Long id);
 }

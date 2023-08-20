@@ -11,7 +11,6 @@ public class EffectiveMobileTestTaskApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EffectiveMobileTestTaskApplication.class, args);
 	}
-
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
