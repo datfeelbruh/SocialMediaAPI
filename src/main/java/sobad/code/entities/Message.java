@@ -4,7 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +23,14 @@ import java.time.Instant;
 @AllArgsConstructor
 public class Message {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String toUsername;
+    @ManyToOne
+    private User fromUser;
+    @ManyToOne
+    private User toUser;
+    @NotBlank
+    @Size(max = 500, message = "Сообщение слишком большое!")
     private String messageBody;
-    private Instant createdAt;
+    private Instant timestamp;
 }

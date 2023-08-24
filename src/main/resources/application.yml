@@ -5,6 +5,10 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: prod
+
+spring-doc:
+  swagger-ui:
+    path: /api-docs.html
 
 jwt-secret: iufjvgdsbYGB23U4BKQB8CJHbjfdsbb82134b1bfdksjwb819234bfjhsbfj32b487b

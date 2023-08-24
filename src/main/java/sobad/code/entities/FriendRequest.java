@@ -5,18 +5,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import sobad.code.status.FriendStatus;
+import sobad.code.status.Status;
 
 @Entity
 @Table(name = "friend_requests")
@@ -35,5 +31,5 @@ public class FriendRequest {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private User friend;
-    private FriendStatus status;
+    private Status status;
 }

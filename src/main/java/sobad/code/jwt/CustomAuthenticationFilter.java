@@ -21,7 +21,6 @@ import java.time.Instant;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static sobad.code.security.SecurityConfig.PUBLIC_URLS;
 
 @Component
 @RequiredArgsConstructor
@@ -35,20 +34,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         String token;
         String username;
-        if (authorizationHeader == null && !PUBLIC_URLS.matches(request)) {
-            AppError appError = new AppError(
-                    FORBIDDEN.value(),
-                    "Авторизируйтесь для выполнения этого запроса.",
-                    Instant.now().toString()
-            );
-
-            response.setStatus(FORBIDDEN.value());
-            response.setContentType(APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(UTF_8.toString());
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            objectMapper.writeValue(response.getWriter(), appError);
-        }
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             token = authorizationHeader.substring(7);

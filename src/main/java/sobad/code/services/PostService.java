@@ -1,14 +1,14 @@
 package sobad.code.services;
 
-import org.springframework.web.multipart.MultipartFile;
 import sobad.code.dtos.PostDtoRequest;
 import sobad.code.dtos.PostDtoResponse;
 
-import java.io.IOException;
+import java.util.List;
 
 public interface PostService {
-    PostDtoResponse createPost(PostDtoRequest postDtoRequest, MultipartFile file) throws IOException;
+    PostDtoResponse createPost(PostDtoRequest postDtoRequest);
     PostDtoResponse getPostDtoResponse(Long id);
-    PostDtoResponse updatePost(Long id, PostDtoRequest postDtoRequest, MultipartFile file) throws IOException;
+    PostDtoResponse updatePost(Long id, PostDtoRequest postDtoRequest);
     PostDtoResponse deletePost(Long id);
+    List<PostDtoResponse> getFollowedUsersPost(Integer page, Integer limit, Boolean sorted);
 }
